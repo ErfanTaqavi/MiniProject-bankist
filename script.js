@@ -61,31 +61,50 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+const DisplayMovments = function (movements) {
+  //like textcontent = 0
+  containerMovements.innerHTML = ''
+  
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const html = `
+    <div class="movements__row">
+     <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+     <div class="movements__value">${mov}</div>
+    </div>
+  `;
+containerMovements.insertAdjacentHTML("afterbegin",html)
+  });
+};
+
+DisplayMovments(account1.movements);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
 
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
+// const currencies = new Map([
+//   ['USD', 'United States dollar'],
+//   ['EUR', 'Euro'],
+//   ['GBP', 'Pound sterling'],
+// ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
-for (const [index,movement] of movements.entries()) {
-  if(movement > 0)
-    console.log(`movment ${index +1}: ${movement} deposited`);
-  else
-  console.log(`movment ${index +1}: ${Math.abs(movement)} withdrew`);
+// for (const [index,movement] of movements.entries()) {
+//   if(movement > 0)
+//     console.log(`movment ${index +1}: ${movement} deposited`);
+//   else
+//   console.log(`movment ${index +1}: ${Math.abs(movement)} withdrew`);
 
-}
-//FOREACH MODAL//
-movements.forEach(function(mov,index,array) {
-  if(mov > 0)
-    console.log(`movment ${index +1}: ${mov} deposited`);
-  else
-  console.log(`movment ${index +1}: ${Math.abs(mov)} withdrew`);
+// }
+// //FOREACH MODAL//
+// movements.forEach(function(mov,index,array) {
+//   if(mov > 0)
+//     console.log(`movment ${index +1}: ${mov} deposited`);
+//   else
+//   console.log(`movment ${index +1}: ${Math.abs(mov)} withdrew`);
 
-
-})
+// })
