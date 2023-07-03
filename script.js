@@ -79,7 +79,6 @@ const DisplayMovments = function (movements) {
 containerMovements.insertAdjacentHTML("afterbegin",html)
   });
 };
-
 DisplayMovments(account1.movements);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
