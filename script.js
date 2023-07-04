@@ -63,8 +63,8 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 const DisplayMovments = function (movements) {
   //like textcontent = 0
-  containerMovements.innerHTML = ''
-  
+  containerMovements.innerHTML = '';
+
   movements.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
@@ -76,34 +76,21 @@ const DisplayMovments = function (movements) {
      <div class="movements__value">${mov}</div>
     </div>
   `;
-containerMovements.insertAdjacentHTML("afterbegin",html)
+    containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
 DisplayMovments(account1.movements);
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
 
-// const currencies = new Map([
-//   ['USD', 'United States dollar'],
-//   ['EUR', 'Euro'],
-//   ['GBP', 'Pound sterling'],
-// ]);
+//function to creat username for account
 
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-// for (const [index,movement] of movements.entries()) {
-//   if(movement > 0)
-//     console.log(`movment ${index +1}: ${movement} deposited`);
-//   else
-//   console.log(`movment ${index +1}: ${Math.abs(movement)} withdrew`);
-
-// }
-// //FOREACH MODAL//
-// movements.forEach(function(mov,index,array) {
-//   if(mov > 0)
-//     console.log(`movment ${index +1}: ${mov} deposited`);
-//   else
-//   console.log(`movment ${index +1}: ${Math.abs(mov)} withdrew`);
-
-// })
+const createusernames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+createusernames(accounts);
+console.log(accounts);
