@@ -63,11 +63,13 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
-const DisplayMovments = function (movements) {
+const DisplayMovments = function (movements, sort = false) {
   //like textcontent = 0
   containerMovements.innerHTML = '';
 
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const html = `
@@ -178,8 +180,25 @@ btnTransfer.addEventListener('click', function (e) {
   inputTransferAmount.value = inputTransferTo.value = '';
   inputTransferAmount.blur();
 });
+//func to give loan
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
 
-//func to close account 
+  const amount = Number(inputLoanAmount.value);
+  if (
+    amount > 0 &&
+    amount >= currentAccount.movements.some(mov => mov > amount * 0.1)
+  ) {
+    //add movement
+    currentAccount.movements.push(amount);
+    //updateUI
+    UpdateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+  inputLoanAmount.blur();
+});
+
+//func to close account
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -187,14 +206,76 @@ btnClose.addEventListener('click', function (e) {
     currentAccount.username === inputCloseUsername.value &&
     currentAccount.pin === Number(inputClosePin.value)
   ) {
+    //find index of acc
     const index = accounts.findIndex(
       account => account.username === inputCloseUsername.value
     );
-    accounts.splice(index,1)
+    //remove acc from arr
+    accounts.splice(index, 1);
     containerApp.style.opacity = 0;
-
   }
   inputCloseUsername.value = inputClosePin.value = '';
-
+});
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  DisplayMovments(currentAccount.movements, !sorted);
+  sorted = !sorted;
 });
 
+//2 ways to calc total balance of accounts
+// calc total movement by bank (1)
+const accmovement = accounts.map(acc => acc.movements);
+const allmovements = accmovement.flat(1);
+const totalmovements = allmovements.reduce((acc, mov) => acc + mov);
+console.log(totalmovements);
+//another way to calc (2)
+const overallmovements = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, mov) => acc + mov);
+console.log(overallmovements);
+
+//create new arr from movements in UI. click on label Balance and see console
+labelBalance.addEventListener('click', function () {
+  const movmentsUI = Array.from(
+    document.querySelectorAll('.movements__value'),
+    el => Number(el.textContent.replace('₤', ''))
+  );
+  console.log(movmentsUI);
+});
+
+//sum all Diposite
+const BankeDipositeSum = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((sum, mov) => sum + mov,0);
+  
+  
+  console.log(BankeDipositeSum);
+
+//Number of all Diposite greater than 1000 
+//(1)
+const SumDipositeGreater1000_1 =accounts.flatMap(acc => acc.movements).filter(mov => mov >= 1000).length
+console.log(SumDipositeGreater1000_1);
+//(2)
+const SumDipositeGreater1000_2 =accounts.flatMap(acc => acc.movements).reduce((count,mov)=> mov >=1000 ? ++count : count,0)
+console.log(SumDipositeGreater1000_2);
+
+// sums with reduce method and create object
+const sums = accounts.flatMap(acc => acc.movements).reduce((sums,cur)=>{
+  cur > 0 ? (sums.deposit += cur ): (sums.withdrawal += cur)
+  return sums
+},
+{deposit: 0, withdrawal:0 
+})
+console.log(sums);
+/*
+// practice for try with array methods
+const captitle = function(title){
+
+  const exceptions = ['a','and']
+  const cap = title.toLowerCase().split(' ').map(word => exceptions.includes(word)? word : word[0].toUpperCase()+word.slice(1)).join(' ')
+  return cap
+}
+console.log(captitle('write a title'));
+*/
