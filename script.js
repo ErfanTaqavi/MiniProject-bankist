@@ -175,15 +175,15 @@ const updateUI = function (acc) {
 ///////////////////////////////////////
 // Event handlers
 let currentAccount;
-//fake login
-currentAccount = account1
-updateUI(currentAccount)
-containerApp.style.opacity = 100 
+// //fake login
+// currentAccount = account1
+// updateUI(currentAccount)
+// containerApp.style.opacity = 100 
 
 const now = new Date()
 const year = now.getFullYear()
 const month = `${now.getMonth() + 1}`.padStart(2,0)
-const day = `${now.getDay()}`.padStart(2,0) 
+const day = `${now.getDate()}`.padStart(2,0) 
 const hour = `${now.getHours()}`.padStart(2,0)
 const min = `${now.getMinutes()}`.padStart(2,0)
 
